@@ -19,15 +19,6 @@ public class SecurityConfig {
 	
 	@Bean    
     public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withUsername("Admin")
-//                .password(encoder.encode("Admin"))
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user = User.withUsername("User")
-//                .password(encoder.encode("User"))
-//                .roles("USER","ADMIN","HR")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user);
         return new UserService();
     }
 
@@ -41,8 +32,9 @@ public class SecurityConfig {
 					.requestMatchers("/user").hasRole("USER")
 					.requestMatchers("/admin").hasRole("ADMIN")
 					.requestMatchers("/**").permitAll()
-			)
-			.formLogin(withDefaults());
+			);
+			//.formLogin(withDefaults());
+    	http.headers((headers) -> headers.frameOptions((frameOptions) -> frameOptions.disable()));
 		return http.build();    
     }
 
@@ -50,7 +42,7 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         //return new BCryptPasswordEncoder();
-    	return new PasswordEnconderTest();
+    	return new NoPasswordEnconder();
     }
 
     
